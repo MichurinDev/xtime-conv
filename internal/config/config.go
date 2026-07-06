@@ -7,9 +7,10 @@ import (
 )
 
 type Config struct {
-	Timestamp int
-	Timezone  int
-	Format    string
+	ShowVersion bool
+	Timestamp   int
+	Timezone    int
+	Format      string
 }
 
 const DefaultFormat = "02.01.2006 15:04:05"
@@ -19,6 +20,8 @@ func Parse() (*Config, error) {
 		Format: DefaultFormat,
 	}
 
+	flag.BoolVar(&cfg.ShowVersion, "v", false, "print version and exit")
+	flag.BoolVar(&cfg.ShowVersion, "version", false, "print version and exit")
 	flag.IntVar(&cfg.Timestamp, "t", 0, "Unix timestamp (required)")
 	flag.IntVar(&cfg.Timezone, "tz", 0, "Timezone offset in hours (default: 0 = UTC)")
 	flag.StringVar(&cfg.Format, "f", cfg.Format, "Output time format (Go layout)")
@@ -26,6 +29,10 @@ func Parse() (*Config, error) {
 	flag.Usage = PrintUsage
 
 	flag.Parse()
+
+	if cfg.ShowVersion {
+		return cfg, nil
+	}
 
 	if cfg.Timestamp == 0 {
 		flag.Usage()
