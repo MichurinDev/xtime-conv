@@ -3,13 +3,15 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'          # срабатывает только при создании тега v1.0.0
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout code
